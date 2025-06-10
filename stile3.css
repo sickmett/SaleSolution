@@ -1,0 +1,205 @@
+body,
+input,
+select,
+textarea,
+button,
+label,
+option,
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+}
+
+:root {
+  --primary: #ff6600;       /* Arancione WindTre */
+  --primary-dark: #e65c00;
+  --accent: #ffe5d0;
+  --background: #fffaf5;
+  --text: #333;
+  --card-bg: #ffffff;
+  --border: #ffd6ac;
+  --shadow: rgba(255, 102, 0, 0.1);
+  --green: #1d891d;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: var(--background);
+  color: var(--text);
+  padding: 20px;
+}
+
+h2 {
+  color: var(--primary-dark);
+  border-left: 6px solid var(--primary);
+  padding-left: 10px;
+  margin-top: 40px;
+  font-size: 1.6rem;
+  background: var(--accent);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 6px;
+}
+
+label {
+  display: inline-block;
+  min-width: 200px;
+  vertical-align: top;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--primary-dark);
+}
+
+select,
+input[type="number"] {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  min-width: 200px;
+  margin-top: 4px;
+  background-color: #fff;
+  color: var(--text);
+}
+
+select:focus,
+input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 5px var(--primary);
+}
+
+.prodotto {
+  margin-bottom: 20px;
+}
+
+.categoria {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--primary);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 10px var(--shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.categoria:hover {
+  box-shadow: 0 6px 16px var(--shadow);
+}
+
+button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+}
+
+.prezzo {
+  margin-left: 10px;
+  font-weight: bold;
+  color: var(--green);
+}
+
+#totale {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--green);
+  margin-top: 30px;
+  padding: 10px 20px;
+  border: 2px dashed var(--primary);
+  border-radius: 10px;
+  display: inline-block;
+  background-color: #fff;
+}
+
+@media (max-width: 768px) {
+  label {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  select,
+  input[type="number"] {
+    width: 100%;
+  }
+
+  .categoria {
+    padding: 16px;
+  }
+}
+/* --- ANIMAZIONI --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* CATEGORIE animate al caricamento */
+.categoria {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+/* Applichiamo animazione con un po' di ritardo tra le sezioni */
+.categoria:nth-of-type(1) { animation-delay: 0.1s; }
+.categoria:nth-of-type(2) { animation-delay: 0.2s; }
+.categoria:nth-of-type(3) { animation-delay: 0.3s; }
+.categoria:nth-of-type(4) { animation-delay: 0.4s; }
+.categoria:nth-of-type(5) { animation-delay: 0.5s; }
+
+/* Bottone con effetto pulse al click */
+button:active {
+  animation: pulse 0.2s ease;
+}
+
+/* Focus glow su input e select */
+select:focus,
+input[type="number"]:focus {
+  box-shadow: 0 0 6px 2px var(--primary);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Hover su card */
+.categoria:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px var(--shadow);
+  transition: all 0.3s ease;
+}
+select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+}
+
+option {
+  font-weight: 500;
+}
