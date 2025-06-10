@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stile3.css">
+<meta charset="utf-8"/>
+<title>MAIN PROJECT - CONSUMER</title>
+<style>
+    body { font-family: Poppins, sans-serif; margin: 30px; }
+    h2 { color: #2a7ae2; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+    .categoria { margin-bottom: 30px; }
+    .prodotto { margin-bottom: 15px; }
+    label { display: inline-block; width: 200px; vertical-align: top; }
+    .prezzo { margin-left: 10px; font-weight: bold; }
+    #totale { margin-top: 30px; font-size: 1.3em; font-weight: bold; color: green; }
+</style>
+</head>
+<body>
+  <div style="text-align: right; font-family: Poppins, sans-serif; padding: 10px;">
+    <span>Utente loggato: <strong id="utenteCorrente"></strong></span>
+    <button onclick="logout()" style="margin-left: 10px; padding: 5px 10px; background-color: #ff6600; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      Logout
+    </button>
+  </div>
+
+<div style="margin-bottom: 20px;">
+<label><input checked="checked" name="sezione" onchange="mostraSezione('consumer')" type="radio" value="consumer"/> Consumer</label>
+<button onclick="window.location.href='business.html'">Passa A Business</button>
+</div>
+<!-- Script presi integralmente dall'originale -->
+<script>
+if (!localStorage.getItem('utente')) { window.location.href = 'login.html'; }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const selected = document.querySelector('input[name="sezione"]:checked').value;
+  mostraSezione(selected);
+});
+</script><div id="consumerPage">
+<div class="categoria">
+  <h2>Dati Cliente</h2>
+  <div class="prodotto">
+    <label for="nome">Nome</label>
+    <input id="nome" type="text" placeholder="Mario" />
+  </div>
+  <div class="prodotto">
+    <label for="cognome">Cognome</label>
+    <input id="cognome" type="text" placeholder="Rossi" />
+  </div>
+  <div class="prodotto">
+    <label for="telefono">Telefono</label>
+    <input id="telefono" type="tel" placeholder="1234567890" />
+  </div>
+  <div class="prodotto">
+    <label for="indirizzo">Indirizzo</label>
+    <input id="indirizzo" type="text" placeholder="Via Roma 1, Milano" />
+  </div>
+  <div class="prodotto">
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="mario.rossi@email.com" />
+  </div>
+  <div class="prodotto">
+  <label for="data">Data preventivo</label>
+  <input type="date" id="data" />
+</div>
+</div>
+<!-- Mobile -->
+<div class="categoria">
+<h2>Mobile</h2>
+<!-- SIM -->
+<div class="prodotto">
+<label for="sim1">Sim #1</label>
+<select id="sim1" onchange="aggiornaTotale()">
+<option value="0">--</option>
+<option disabled="">— VOCE —</option>
+<option value="4.99">GO 150 XXS 5G - €4.99</option>
+<option value="5.99">GO 150 XS - €5.99</option>
+<option value="6.99">GO UNLIMITED FIRE+ - €6.99</option>
+<option value="7.99">GO UNLIMITED FIRE+ 5G - €7.99</option>
+<option value="9.99">Unlimited 5G con S.F - €9.99</option>
+<option value="7.99">Family Unlimited con S.F - €7.99</option>
+<option value="7.99">Multiservice con S.F - €7.99</option>
+<option value="7.99">Multiservice Assicurazioni con S.F - €7.99</option>
+<option value="14.99">UNLIMITED 200GB - €14.99</option>
+<option value="12.99">START 5G - €12.99</option>
+<option value="12.99">PACK 5G RELOAD EXCHANGE - €12.99</option>
+<option value="9.99">FAMILY UNLIMITED 100 - €9.99</option>
+<option value="7.99">VOCE 5G - €7.99</option>
+<option value="6.99">SUPER 5G - €6.99</option>
+<option value="9.99">SUPER 5G+ - €9.99</option>
+<option disabled="">— DATI —</option>
+<option value="9.99">SUPER INTERNET 100GB - €9.99</option>
+<option value="12.99">SUPER INTERNET 250GB - €12.99</option>
+<option value="23.99">SUPER INTERNET UNLIMITED 5G - €23.99</option>
+<option value="16.99">SUPER INTERNET SECONDA CASA 5G - €16.99</option>
+</select>
+<span class="prezzo" id="p_sim1">€0.00</span>
+</div>
+<div class="prodotto">
+<label for="sim2">Sim #2</label>
+<select id="sim2" onchange="aggiornaTotale()">
+<option value="0">--</option>
+<option disabled="">— VOCE —</option>
+<option value="4.99">GO 150 XXS 5G - €4.99</option>
+<option value="5.99">GO 150 XS - €5.99</option>
+<option value="6.99">GO UNLIMITED FIRE+ - €6.99</option>
+<option value="7.99">GO UNLIMITED FIRE+ 5G - €7.99</option>
+<option value="9.99">Unlimited 5G con S.F - €9.99</option>
+<option value="7.99">Family Unlimited con S.F - €7.99</option>
+<option value="7.99">Multiservice con S.F - €7.99</option>
+<option value="7.99">Multiservice Assicurazioni con S.F - €7.99</option>
+<option value="14.99">UNLIMITED 200GB - €14.99</option>
+<option value="12.99">START 5G - €12.99</option>
+<option value="12.99">PACK 5G RELOAD EXCHANGE - €12.99</option>
+<option value="9.99">FAMILY UNLIMITED 100 - €9.99</option>
+<option value="7.99">VOCE 5G - €7.99</option>
+<option value="6.99">SUPER 5G - €6.99</option>
+<option value="9.99">SUPER 5G+ - €9.99</option>
+<option disabled="">— DATI —</option>
+<option value="9.99">SUPER INTERNET 100GB - €9.99</option>
+<option value="12.99">SUPER INTERNET 250GB - €12.99</option>
+<option value="23.99">SUPER INTERNET UNLIMITED 5G - €23.99</option>
+<option value="16.99">SUPER INTERNET SECONDA CASA 5G - €16
+      </option></select>
+<span class="prezzo" id="p_sim2">€0.00</span>
+</div>
+<div class="prodotto">
+<label for="sim3">Sim #3</label>
+<select id="sim3" onchange="aggiornaTotale()">
+<option value="0">--</option>
+<option disabled="">— VOCE —</option>
+<option value="4.99">GO 150 XXS 5G - €4.99</option>
+<option value="5.99">GO 150 XS - €5.99</option>
+<option value="6.99">GO UNLIMITED FIRE+ - €6.99</option>
+<option value="7.99">GO UNLIMITED FIRE+ 5G - €7.99</option>
+<option value="9.99">Unlimited 5G con S.F - €9.99</option>
+<option value="7.99">Family Unlimited con S.F - €7.99</option>
+<option value="7.99">Multiservice con S.F - €7.99</option>
+<option value="7.99">Multiservice Assicurazioni con S.F - €7.99</option>
+<option value="14.99">UNLIMITED 200GB - €14.99</option>
+<option value="12.99">START 5G - €12.99</option>
+<option value="12.99">PACK 5G RELOAD EXCHANGE - €12.99</option>
+<option value="9.99">FAMILY UNLIMITED 100 - €9.99</option>
+<option value="7.99">VOCE 5G - €7.99</option>
+<option value="6.99">SUPER 5G - €6.99</option>
+<option value="9.99">SUPER 5G+ - €9.99</option>
+<option disabled="">— DATI —</option>
+<option value="9.99">SUPER INTERNET 100GB - €9.99</option>
+<option value="12.99">SUPER INTERNET 250GB - €12.99</option>
+<option value="23.99">SUPER INTERNET UNLIMITED 5G - €23.99</option>
+<option value="16.99">SUPER INTERNET SECONDA CASA 5G - €16
+      </option></select>
+<span class="prezzo" id="p_sim3">€0.00</span>
+</div>
+<!-- Telefoni 1-3 con marca, modello, rata -->
+<!-- Telefono 1 -->
+<div class="prodotto">
+<label for="marca1">Marca Telefono 1</label>
+<select id="marca1" onchange="aggiornaModelli('', 1)">
+<option value="">-- Seleziona marca --</option>
+<option value="apple">Apple</option>
+<option value="samsung">Samsung</option>
+<option value="xiaomi">Xiaomi</option>
+<option value="oppo">Oppo</option>
+<option value="honor">Honor</option>
+<option value="zte">ZTE</option>
+<option value="vivo">Vivo</option>
+<option value="motorola">Motorola</option>
+</select>
+</div>
+<div class="prodotto">
+<label for="modello1">Modello Telefono 1</label>
+<select id="modello1">
+<option value="">-- Seleziona modello --</option>
+</select>
+</div>
+<div class="prodotto">
+<label for="tel1">Rata Telefono 1 (€)</label>
+<input id="tel1" min="0" onchange="aggiornaTotale()" oninput="aggiornaTotale()" type="number" value="0"/>
+<span class="prezzo" id="p_tel1">€0.00</span>
+</div>
+<!-- Telefono 2 -->
+<div class="prodotto">
+<label for="marca2">Marca Telefono 2</label>
+<select id="marca2" onchange="aggiornaModelli('', 2)">
+<option value="">-- Seleziona marca --</option>
+<option value="apple">Apple</option>
+<option value="samsung">Samsung</option>
+<option value="xiaomi">Xiaomi</option>
+<option value="oppo">Oppo</option>
+<option value="honor">Honor</option>
+<option value="zte">ZTE</option>
+<option value="vivo">Vivo</option>
+<option value="motorola">Motorola</option>
+</select>
+</div>
+<div class="prodotto">
+<label for="modello2">Modello Telefono 2</label>
+<select id="modello2">
+<option value="">-- Seleziona modello --</option>
+</select>
+</div>
+<div class="prodotto">
+<label for="tel2">Rata Telefono 2 (€)</label>
+<input id="tel2" min="0" onchange="aggiornaTotale()" oninput="aggiornaTotale()" type="number" value="0"/>
+<span class="prezzo" id="p_tel2">€0.00</span>
+</div>
+<!-- Telefono 3 -->
+<div class="prodotto">
+<label for="marca2">Marca Telefono 3</label>
+<select id="marca2" onchange="aggiornaModelli('', 2)">
+<option value="">-- Seleziona marca --</option>
+<option value="apple">Apple</option>
+<option value="samsung">Samsung</option>
+<option value="xiaomi">Xiaomi</option>
+<option value="oppo">Oppo</option>
+<option value="honor">Honor</option>
+<option value="zte">ZTE</option>
+<option value="vivo">Vivo</option>
+<option value="motorola">Motorola</option>
+</select>
+</div>
+<div class="prodotto">
+<label for="modello2">Modello Telefono 3</label>
+<select id="modello2">
+<option value="">-- Seleziona modello --</option>
+</select>
+</div>
+<div class="prodotto">
+<label for="tel3">Rata Telefono 3 (€)</label>
+<input id="tel3" min="0" onchange="aggiornaTotale()" oninput="aggiornaTotale()" type="number" value="0"/>
+<span class="prezzo" id="p_tel3">€0.00</span>
+</div>
+<!-- Reload -->
+<div class="prodotto">
+<label for="reload">Reload</label>
+<select id="reload" onchange="aggiornaTotale()">
+<option value="0">--</option>
+<option value="2">prova - €2</option>
+</select>
+<span class="prezzo" id="p_reload">€0.00</span>
+</div>
+</div>
+<!-- Fisso -->
+<div class="categoria">
+<h2>Fisso</h2>
+<div class="prodotto"><label for="fibra">Fibra</label><select id="fibra" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="19.99">FTTH 19,99€</option>
+<option value="20.99">FTTH AB 20,99€</option>
+<option value="22.99">FTTH 22,99€</option>
+<option value="23.99">FTTH 23,99€</option>
+<option value="28.99">FTTH &amp; NETFLIX PUB 28,99€</option>
+<option value="32.99">FTTH &amp; NETLIFX 32.99€</option>
+<option value="29.99">FTTH ASSICURAZIONI 29.99€</option>
+<option value="23.99">FTTC 23,99€</option>
+<option value="24.99">FTTC 24.99€</option>
+<option value="29.99">FTTC &amp; NETLIFX PUB 29.99€</option>
+<option value="33.99">FTTC &amp; NETFLIX 33.99€</option>
+</select>
+<span class="prezzo" id="p_fibra">€0.00</span></div>
+<div class="prodotto"><label for="fwa">Fwa</label><select id="fwa" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="19.99">FWA 5G LUCE&amp;GAS 19,99€</option>
+<option value="29.99">FWA 5G ASSICURAZIONI 29.99€</option>
+<option value="23.99">FWA 5G 23,99€</option>
+<option value="28.99">FWA 5G &amp; NETFLIX PUB 28.99€</option>
+<option value="32.99">FWA 5G &amp; NETFLIX PUB 32,99€</option>
+</select>
+<span class="prezzo" id="p_fwa">€0.00</span></div>
+<div class="prodotto"><label for="attivazione">Attivazione</label><select id="attivazione" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="39.99">Costo attivazione 39€</option>
+<option value="50">Costo attivazione 50€</option>
+<option value="60">Costo attivazione 60€</option>
+<option value="2.50">Costo attivazione rateizzato (fwa 5g) 2,50€</option>
+<option value="1.99">Costo attivazione rateizzato (ftth ab) 1,99€</option>
+<option value="0">Costo attivazione scontato 0€</option></select>
+<span class="prezzo" id="p_attivazione">€0.00</span></div>
+<div class="prodotto"><label for="sicuri">Sicurezza</label><select id="sicuri" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="1.99">Piu' Sicuri Casa &amp; Ufficio</option>
+</select>
+<span class="prezzo" id="p_sicuri">€0.00</span></div>
+<div class="prodotto">
+<label for="opzioni">Opzioni</label>
+<select id="opzioni" onchange="aggiornaTotale()">
+<option value="0">--</option>
+<option value="3">Chiamate illimitate - €3.00</option>
+<option value="5">Chiamate illimitate estere - €5.00</option>
+<option value="1.99">Servizio InVista - €1.99</option>
+</select>
+<span class="prezzo" id="p_opzioni">€0.00</span>
+</div>
+<!-- Luce e Gas -->
+<div class="categoria">
+<h2>Luce e Gas</h2>
+<!-- LUCE -->
+<div class="prodotto">
+<label>Luce - Costo Energetico</label><br/>
+<input id="prezzo_luce" onchange="aggiornaTotale()" placeholder="€/kWh" step="0.01" type="number"/>
+<input id="consumo_luce" onchange="aggiornaTotale()" placeholder="kWh" step="0.01" type="number"/>
+<span class="prezzo" id="p_luce">€0.00</span>
+</div>
+<!-- Costo fisso luce -->
+<div class="prodotto">
+<label for="costo_fisso_luce">Luce - Costo Fisso</label>
+<select id="costo_fisso_luce" onchange="aggiornaTotale()">
+<option value="0">--</option>
+<option value="7.75">Costo fisso - €7.75</option>
+</select>
+<span class="prezzo" id="p_costo_fisso_luce">€0.00</span>
+</div>
+<!-- Totale Luce -->
+<div class="prodotto">
+<label>Totale Luce</label>
+<span class="prezzo" id="totale_luce">€0.00</span>
+</div>
+<!-- GAS -->
+<div class="prodotto">
+<label>Gas - Costo Materia Gas Naturale</label><br/>
+<input id="prezzo_gas" onchange="aggiornaTotale()" placeholder="€/Smc" step="0.01" type="number"/>
+<input id="consumo_gas" onchange="aggiornaTotale()" placeholder="Smc" step="0.01" type="number"/>
+<span class="prezzo" id="p_gas">€0.00</span>
+</div>
+<!-- Costo fisso gas -->
+<div class="prodotto">
+<label for="costo_fisso_gas">Gas - Costo Fisso</label>
+<select id="costo_fisso_gas" onchange="aggiornaTotale()">
+<option value="0">--</option>
+<option value="7.75">Costo fisso - €7.75</option>
+</select>
+<span class="prezzo" id="p_costo_fisso_gas">€0.00</span>
+</div>
+<!-- Totale Gas -->
+<div class="prodotto">
+<label>Totale Gas</label>
+<span class="prezzo" id="totale_gas">€0.00</span>
+</div>
+</div>
+<!-- Assicurazioni -->
+<div class="categoria">
+<h2>Assicurazioni</h2>
+<div class="prodotto"><label for="casa">Casa</label><select id="casa" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="9.99">PROTEZIONE START</option>
+<option value="19.99">PROTEZIONE PLUS</option>
+<option value="29.99">PROTEZIONE FULL</option>
+</select>
+<span class="prezzo" id="p_casa">€0.00</span></div>
+<div class="prodotto"><label for="viaggi">Viaggi</label><select id="viaggi" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="7.99">PROTEZIONE VIAGGI</option>
+</select>
+<span class="prezzo" id="p_viaggi">€0.00</span></div>
+<div class="prodotto"><label for="animali">Animali</label><select id="animali" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="13.99">PROTEZIONE MICIO E FIDO</option>
+</select>
+<span class="prezzo" id="p_animali">€0.00</span></div>
+<div class="prodotto"><label for="elettro">Elettrodomestici</label><select id="elettro" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="4.99">PROTEZIONE ELETTRODOMESTICI</option>
+</select>
+<span class="prezzo" id="p_elettro">€0.00</span></div>
+<div class="prodotto"><label for="sport">Sport</label><select id="sport" onchange="aggiornaTotale()"><option value="0">--</option>
+<option value="5.99">PROTEZIONE SPORT INDIVIDUALE</option>
+<option value="12.99">PROTEZIONE SPORT FAMIGLIA</option>
+</select>
+<span class="prezzo" id="p_sport">€0.00</span></div>
+</div>
+<!-- Totale -->
+<div><strong>Totale: <span id="totale">€0.00</span></strong></div>
+<div class="prodotto">
+  <button onclick="salvaPreventivo()">Salva preventivo</button>
+  <button onclick="window.location.href='agenda.html'">Vai all’agenda</button>
+</div>
+</div><div id="businessPage" style="display: none;">
+</div><script>
+if (!localStorage.getItem('utente')) { window.location.href = 'login.html'; }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const selected = document.querySelector('input[name="sezione"]:checked').value;
+  mostraSezione(selected);
+});
+</script>
+<script>
+if (!localStorage.getItem('utente')) { window.location.href = 'login.html'; }
+
+function mostraSezione(tipo) {
+  document.getElementById('consumerPage').style.display = tipo === 'consumer' ? 'block' : 'none';
+  document.getElementById('businessPage').style.display = tipo === 'business' ? 'block' : 'none';
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const selected = document.querySelector('input[name="sezione"]:checked')?.value;
+  if (selected) {
+    mostraSezione(selected);
+  }
+});
+</script>
+</div>
+<script>
+if (!localStorage.getItem('utente')) { window.location.href = 'login.html'; }
+
+function aggiornaTotale() {
+  let totale = 0;
+  const campi = [
+    'sim1','sim2','sim3','tel1','tel2','tel3',
+    'reload','fibra','fwa','attivazione','sicuri','opzioni',
+    'casa','viaggi','animali','elettro','sport'
+  ];
+
+  campi.forEach(id => {
+    const el = document.getElementById(id);
+    const val = parseFloat(el?.value) || 0;
+    const span = document.getElementById('p_' + id);
+    if (span) span.textContent = `€${val.toFixed(2)}`;
+    totale += val;
+  });
+
+  // LUCE
+  const prezzoLuce = parseFloat(document.getElementById("prezzo_luce")?.value) || 0;
+  const consumoLuce = parseFloat(document.getElementById("consumo_luce")?.value) || 0;
+  const costoFissoLuce = parseFloat(document.getElementById("costo_fisso_luce")?.value) || 0;
+  const costoEnergeticoLuce = prezzoLuce * consumoLuce;
+  document.getElementById("p_luce").textContent = `€${costoEnergeticoLuce.toFixed(2)}`;
+  document.getElementById("p_costo_fisso_luce").textContent = `€${costoFissoLuce.toFixed(2)}`;
+  document.getElementById("totale_luce").textContent = `€${(costoEnergeticoLuce + costoFissoLuce).toFixed(2)}`;
+
+  // GAS
+  const prezzoGas = parseFloat(document.getElementById("prezzo_gas")?.value) || 0;
+  const consumoGas = parseFloat(document.getElementById("consumo_gas")?.value) || 0;
+  const costoFissoGas = parseFloat(document.getElementById("costo_fisso_gas")?.value) || 0;
+  const costoEnergeticoGas = prezzoGas * consumoGas;
+  document.getElementById("p_gas").textContent = `€${costoEnergeticoGas.toFixed(2)}`;
+  document.getElementById("p_costo_fisso_gas").textContent = `€${costoFissoGas.toFixed(2)}`;
+  document.getElementById("totale_gas").textContent = `€${(costoEnergeticoGas + costoFissoGas).toFixed(2)}`;
+
+  // Totale generale (esclude luce/gas)
+  document.getElementById("totale").textContent = `€${totale.toFixed(2)}`;
+}
+</script>
+<script>
+if (!localStorage.getItem('utente')) { window.location.href = 'login.html'; }
+
+if (!localStorage.getItem("utente")) {
+  window.location.href = "login.html";
+}
+function salvaPreventivo() {
+  const utente = localStorage.getItem("utente") || "anonimo";
+  const preventivo = {
+    utente: utente,
+    cliente: {
+      nome: document.getElementById("nome")?.value || "",
+      cognome: document.getElementById("cognome")?.value || "",
+      telefono: document.getElementById("telefono")?.value || "",
+      email: document.getElementById("email")?.value || "",
+      indirizzo: document.getElementById("indirizzo")?.value || "",
+      data: document.getElementById("data")?.value || "" // 👈 NECESSARIO!
+    },
+    sim1: document.getElementById("sim1")?.value,
+    sim2: document.getElementById("sim2")?.value,
+    sim3: document.getElementById("sim3")?.value,
+    fibra: document.getElementById("fibra")?.value,
+    luce: document.getElementById("prezzo_luce")?.value,
+    gas: document.getElementById("prezzo_gas")?.value,
+    totale: document.getElementById("totale")?.textContent,
+    note: "" // 👈 puoi inizializzare anche questo
+  };
+
+  const preventivi = JSON.parse(localStorage.getItem("preventivi") || "[]");
+  preventivi.push(preventivo);
+  localStorage.setItem("preventivi", JSON.stringify(preventivi));
+
+  alert("Preventivo salvato!");
+}
+</script>
+
+
+<script>
+if (!localStorage.getItem('utente')) { window.location.href = 'login.html'; }
+
+function aggiornaModelli(_, n) {
+  const marca = document.getElementById("marca" + n).value;
+  const modelloSelect = document.getElementById("modello" + n);
+  modelloSelect.innerHTML = '<option value="">-- Seleziona modello --</option>';
+
+  let modelli = [];
+
+  if (marca === "apple") {
+    modelli = [
+      "iPhone 16 128GB",
+      "iPhone 16 256GB",
+      "iPhone 16 512GB",
+      "iPhone 16 Pro 128GB",
+      "iPhone 16 Pro 256GB",
+      "iPhone 16 Pro 512GB",
+      "iPhone 16 Pro Max 128GB",
+      "iPhone 16 Pro Max 256GB",
+      "iPhone 16 Pro Max 512GB"
+    ];
+  } else if (marca === "samsung") {
+    modelli = [
+      "S25 128GB", "S25 256GB", "S25 512GB",
+      "S25+ 256GB", "S25+ 512GB",
+      "S25 Edge 256GB", "S25 Edge 512GB",
+      "S25 Ultra 256GB", "S25 Ultra 512GB", "S25 Ultra 1TB"
+    ];
+  } else if (marca === "xiaomi") {
+    modelli = [
+      "Xiaomi 15",
+      "Xiaomi 15 Ultra",
+      "Note 14",
+      "Note 14 Pro",
+      "Note 14 Pro+"
+    ];
+  } else if (marca === "oppo") {
+    modelli = [
+      "A78 5G",
+      "Oppo Reno 12",
+      "Oppo Reno 12F"
+    ];
+  } else if (marca === "honor") {
+    modelli = [
+      "Magic 7 Lite",
+      "Magic 7 Pro",
+      "Honor 400",
+      "Honor 400 Lite"
+    ];
+  } else if (marca === "zte") {
+    modelli = [
+      "A75 5G",
+      "ZTE A35E"
+    ];
+  } else if (marca === "vivo") {
+    modelli = [
+      "Vivo Y29s"
+    ];
+  } else if (marca === "motorola") {
+    modelli = [
+      "Edge 50 Neo",
+      "Edge 50",
+      "Moto G35",
+      "Moto G34",
+      "Moto G50",
+      "Moto G75"
+    ];
+  }
+
+  modelli.forEach(modello => {
+    const option = document.createElement("option");
+    option.value = modello;
+    option.text = modello;
+    modelloSelect.appendChild(option);
+  });
+}
+</script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const utente = localStorage.getItem("utente");
+      if (!utente) {
+        window.location.href = "login.html";
+      } else {
+        document.getElementById("utenteCorrente").textContent = utente;
+      }
+    });
+
+    function logout() {
+      localStorage.removeItem("utente");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

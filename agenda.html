@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Agenda Preventivi</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f6f6f6;
+      padding: 30px;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: #ff6600;
+    }
+    .preventivo {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .preventivo p {
+      margin: 4px 0;
+    }
+    .preventivo textarea {
+      width: 100%;
+      height: 60px;
+      margin-top: 10px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: 'Poppins', sans-serif;
+    }
+    button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      margin-top: 10px;
+      margin-right: 8px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+    button:hover {
+      background-color: #e65c00;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <h1>Agenda Preventivi</h1>
+    <div>
+      Utente: <strong id="utenteCorrente">-</strong>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div id="listaPreventivi"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const { jsPDF } = window.jspdf;
+      const utente = localStorage.getItem("utente");
+      if (!utente) {
+        window.location.href = "login.html";
+        return;
+      }
+      document.getElementById("utenteCorrente").textContent = utente;
+
+      let preventivi = JSON.parse(localStorage.getItem("preventivi") || "[]")
+        .filter(p => p.utente === utente);
+
+      const lista = document.getElementById("listaPreventivi");
+
+      function render() {
+        lista.innerHTML = "";
+        preventivi.forEach((p, index) => {
+          const div = document.createElement("div");
+          div.className = "preventivo";
+          div.innerHTML = `
+            <p><strong>Data:</strong> ${p.cliente?.data || "-"}</p>
+            <p><strong>Nome:</strong> ${p.cliente?.nome || ""} ${p.cliente?.cognome || ""}</p>
+            <p><strong>Telefono:</strong> ${p.cliente?.telefono || ""}</p>
+            <p><strong>Email:</strong> ${p.cliente?.email || ""}</p>
+            <p><strong>Indirizzo:</strong> ${p.cliente?.indirizzo || ""}</p>
+            <p><strong>SIM 1:</strong> ${p.sim1 || ""}</p>
+            <p><strong>SIM 2:</strong> ${p.sim2 || ""}</p>
+            <p><strong>SIM 3:</strong> ${p.sim3 || ""}</p>
+            <p><strong>Fibra:</strong> ${p.fibra || ""}</p>
+            <p><strong>Luce:</strong> ${p.luce || ""}</p>
+            <p><strong>Gas:</strong> ${p.gas || ""}</p>
+            <p><strong>Totale:</strong> ${p.totale || ""}</p>
+            <label>Note:</label><br>
+            <textarea onchange="salvaNote(${index}, this.value)">${p.note || ""}</textarea><br>
+            <button onclick="esportaPDF(${index})">PDF</button>
+            <button onclick="elimina(${index})">Elimina</button>
+          `;
+          lista.appendChild(div);
+        });
+      }
+
+      window.salvaNote = function(index, testo) {
+        preventivi[index].note = testo;
+        localStorage.setItem("preventivi", JSON.stringify(preventivi));
+      }
+
+      window.elimina = function(index) {
+        if (confirm("Vuoi eliminare questo preventivo?")) {
+          const tutti = JSON.parse(localStorage.getItem("preventivi") || "[]");
+const nuovi = tutti.filter(p => !(p.utente === utente && JSON.stringify(p) === JSON.stringify(preventivi[index])));
+localStorage.setItem("preventivi", JSON.stringify(nuovi));
+preventivi.splice(index, 1);
+render();
+
+        }
+      }
+
+      window.esportaPDF = function(index) {
+        const p = preventivi[index];
+        const cliente = p.cliente || {};
+        const doc = new jsPDF();
+        const logo = new Image();
+        logo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Wind_Tre_logo.svg/512px-Wind_Tre_logo.svg.png";
+        logo.onload = function () {
+          doc.addImage(logo, "PNG", 150, 10, 40, 20);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(14);
+          doc.text("PREVENTIVO COMPLETO", 10, 30);
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "normal");
+          let y = 40;
+          const righe = [
+            `Data: ${cliente.data}`,
+            `Nome: ${cliente.nome} ${cliente.cognome}`,
+            `Telefono: ${cliente.telefono}`,
+            `Email: ${cliente.email}`,
+            `Indirizzo: ${cliente.indirizzo}`,
+            `SIM1: ${p.sim1}`,
+            `SIM2: ${p.sim2}`,
+            `SIM3: ${p.sim3}`,
+            `Fibra: ${p.fibra}`,
+            `Luce: ${p.luce}`,
+            `Gas: ${p.gas}`,
+            `Totale: ${p.totale}`
+          ];
+          righe.forEach(r => { doc.text(r, 10, y); y += 8; });
+          if (p.note) {
+            doc.text("Note:", 10, y += 10);
+            doc.text(doc.splitTextToSize(p.note, 180), 10, y += 10);
+          }
+          doc.save(`preventivo_${cliente.nome || "cliente"}.pdf`);
+        };
+      }
+
+      window.logout = function () {
+        localStorage.removeItem("utente");
+        window.location.href = "login.html";
+      }
+
+      render();
+    });
+  </script>
+</body>
+</html>
